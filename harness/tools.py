@@ -144,6 +144,16 @@ class ToolRegistry:
             text = text.replace(root, "<workspace>")
         return ctx.broker.redact(text)[:MAX_OUTPUT]
 
+    @staticmethod
+    def _denial(e: CapabilityDenied, ctx: ToolContext) -> str:
+        """Report file paths relative to the workspace, never as host-absolute paths
+        (including paths that escape it), so messages are stable across machines."""
+        need = e.need
+        if need is not None and need.kind.startswith("fs."):
+            rel = os.path.relpath(need.scope, os.path.realpath(ctx.workspace))
+            return f"missing capability {need.kind} for {rel}"
+        return str(e)
+
     def invoke(self, call: ToolCall, caps: CapabilitySet, ctx: ToolContext) -> ToolResult:
         tool = self._tools.get(call.name)
         if tool is None:
@@ -152,6 +162,6 @@ class ToolRegistry:
             caps.check(tool.required(call.args, ctx))
             return ToolResult(True, self._clean(tool.run(call.args, ctx), ctx))
         except CapabilityDenied as e:
-            return ToolResult(False, self._clean(str(e), ctx), denied=True)
+            return ToolResult(False, self._clean(self._denial(e, ctx), ctx), denied=True)
         except Exception as e:  # tool failures are results the model can read, not crashes
             return ToolResult(False, self._clean(f"{type(e).__name__}: {e}", ctx))

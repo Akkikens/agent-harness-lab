@@ -120,4 +120,4 @@ def test_denial_messages_hide_the_host_workspace_path(ws):
     caps = CapabilitySet([Capability("fs.read", str(ws))])
     r = registry().invoke(ToolCall("1", "read_file", {"path": "../x"}), caps, ctx(ws))
     assert r.denied and str(ws) not in r.output and os.path.realpath(ws) not in r.output
-    assert "<workspace>" in r.output or "missing capability" in r.output
+    assert r.output == "missing capability fs.read for ../x"

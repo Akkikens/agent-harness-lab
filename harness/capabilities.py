@@ -14,6 +14,10 @@ from typing import Iterable, Iterator
 class CapabilityDenied(Exception):
     """A tool call needed a capability the session does not hold."""
 
+    def __init__(self, message: str, need: "Capability | None" = None):
+        super().__init__(message)
+        self.need = need
+
 
 @dataclass(frozen=True)
 class Capability:
@@ -54,7 +58,7 @@ class CapabilitySet:
     def check(self, needs: Iterable[Capability]) -> None:
         for need in needs:
             if not self.allows(need):
-                raise CapabilityDenied(f"missing capability {need}")
+                raise CapabilityDenied(f"missing capability {need}", need)
 
     def attenuate(self, *narrower: Capability) -> "CapabilitySet":
         """Derive a subset. Asking for anything this set does not already
