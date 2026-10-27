@@ -1,6 +1,7 @@
 {
   "passed": [
     "fix-config",
+    "live-primes",
     "refuses-path-escape",
     "write-needs-write-grant"
   ]

@@ -41,7 +41,6 @@ With `ANTHROPIC_API_KEY` set and no `--script`, `run` uses the Anthropic Message
 
 - **At-least-once for the in-flight step.** A step running when the process died has no journal entry, so it runs again on resume. Tools with side effects should be idempotent (`write_file` is) or use the idempotency key. This is not exactly-once and it is not a general workflow engine (no timers, signals, child workflows, or versioning).
 - **`SubprocessSandbox` is not isolation.** It exists for development when Docker is down and is only used with `--weak-sandbox`; otherwise the harness refuses to run code.
-- **Sample cassettes are scripted**, not recorded from a live model (`scripts/make_sample_cases.py` says so). Recording a real model is `harness run ... --record`.
-- **`AnthropicModel` has not been exercised against the live API in this repo's tests.**
+- **Four of the five cassettes are scripted**, not recorded from a live model (`scripts/make_sample_cases.py` says so). `cases/live-primes.json` is the exception: its cassette was recorded from a real `claude-fable-5-1` run through `AnthropicModel` (`harness run ... --record`) and replays offline in CI. That one run is the extent of live-API testing here; the backend has no automated live test.
 - **ACP is the baseline subset only**: no `authenticate`, `session/load`, MCP passthrough, client fs/terminal methods, plans or modes. Written against the published spec at agentclientprotocol.com; tool-call updates send both `name` and `title` because the docs and older clients differ.
 - Path checks resolve once and use the resolved path for the I/O, but it is a lab: don't treat the capability layer as audited.

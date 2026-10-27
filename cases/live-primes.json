@@ -1,0 +1,14 @@
+{
+  "id": "live-primes",
+  "recorded_from": "claude-fable-5-1 via AnthropicModel, 2026-10-27 (real model turns, not scripted)",
+  "task": "Create notes.txt containing the first 5 prime numbers, one per line, then read it back and confirm.",
+  "files": {},
+  "capabilities": ["fs.read:{WS}", "fs.write:{WS}", "exec:python"],
+  "cassette": "../cassettes/live-primes.jsonl",
+  "expect": {
+    "files": {"notes.txt": "2\n3\n5\n7\n11"},
+    "tools": ["write_file", "read_file"],
+    "denied": 0,
+    "final_contains": ["Confirmed"]
+  }
+}
