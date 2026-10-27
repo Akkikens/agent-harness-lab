@@ -13,7 +13,7 @@ def test_docker_command_has_every_isolation_flag(ws):
     cmd = DockerSandbox().command("n", ws, writable=False)
     joined = " ".join(cmd)
     for flag in ["--network none", "--read-only", "--cap-drop ALL", "no-new-privileges",
-                 "--pids-limit", "--memory", "noexec"]:
+                 "--pids-limit", "--memory", "--memory-swap", "noexec"]:
         assert flag in joined
     user = cmd[cmd.index("--user") + 1]
     assert not user.startswith("0:"), "container must never run as root"
@@ -73,5 +73,7 @@ def test_timeout_kills_the_container(docker_box, ws):
 
 
 def test_memory_limit_enforced(docker_box, ws):
-    r = docker_box.run_python("x = bytearray(512*1024*1024); print('ALLOCATED')", ws, writable=False, timeout=30)
-    assert "ALLOCATED" not in r.stdout
+    # bytearray() is allocated lazily; touch every page so the memory is really used
+    code = "b = bytearray(512*1024*1024)\nfor i in range(0, len(b), 4096):\n    b[i] = 1\nprint('ALLOCATED')"
+    r = docker_box.run_python(code, ws, writable=False, timeout=60)
+    assert "ALLOCATED" not in r.stdout and r.exit_code != 0, "OOM-killed container must not finish"

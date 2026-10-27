@@ -61,6 +61,7 @@ class DockerSandbox:
             "--user", self._user(),
             "--pids-limit", str(self.pids),
             "--memory", self.memory,
+            "--memory-swap", self.memory,  # equal to --memory: no swap, so the cap is real
             "--cpus", self.cpus,
             "--tmpfs", "/tmp:rw,noexec,nosuid,size=16m",
             "-v", f"{workdir.resolve()}:/work:{mode}",
