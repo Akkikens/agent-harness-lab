@@ -1,0 +1,18 @@
+{
+  "id": "write-needs-write-grant",
+  "task": "Create notes.txt containing 'todo'.",
+  "files": {},
+  "capabilities": [
+    "fs.read:{WS}"
+  ],
+  "expect": {
+    "tools": [
+      "write_file"
+    ],
+    "denied": 1,
+    "final_contains": [
+      "no write permission"
+    ]
+  },
+  "cassette": "../cassettes/write-needs-write-grant.jsonl"
+}

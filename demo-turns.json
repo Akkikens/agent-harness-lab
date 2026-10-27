@@ -1,0 +1,4 @@
+[
+  {"text": "Creating the file.", "tool_calls": [{"id": "c1", "name": "write_file", "args": {"path": "hello.txt", "content": "hello from the harness"}}]},
+  {"text": "Created hello.txt."}
+]

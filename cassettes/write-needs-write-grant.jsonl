@@ -1,0 +1,2 @@
+{"key": "1e9cc5c38200bea4", "turn": {"text": "Creating it.", "tool_calls": [{"id": "c1", "name": "write_file", "args": {"path": "notes.txt", "content": "todo"}}]}}
+{"key": "ac83ea68b37dbf42", "turn": {"text": "I could not write the file: no write permission.", "tool_calls": []}}

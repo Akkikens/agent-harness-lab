@@ -1,0 +1,21 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest   # ships Docker, so the sandbox tests run against real containers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e '.[dev]'
+      - name: Tests (sandbox tests must run, not skip)
+        run: |
+          docker pull python:3.12-alpine
+          pytest -q -rs
+          # fail the build if any Docker test was skipped
+          pytest -q -m docker -rs | tee /tmp/docker-tests.txt
+          ! grep -q skipped /tmp/docker-tests.txt
+      - name: Replay eval gate
+        run: harness eval cases --baseline eval-baseline.json

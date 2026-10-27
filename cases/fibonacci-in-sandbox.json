@@ -1,0 +1,19 @@
+{
+  "id": "fibonacci-in-sandbox",
+  "needs_sandbox": true,
+  "task": "What is the 10th Fibonacci number? Compute it by running code.",
+  "files": {},
+  "capabilities": [
+    "exec:python"
+  ],
+  "expect": {
+    "tools": [
+      "run_python"
+    ],
+    "denied": 0,
+    "final_contains": [
+      "55"
+    ]
+  },
+  "cassette": "../cassettes/fibonacci-in-sandbox.jsonl"
+}

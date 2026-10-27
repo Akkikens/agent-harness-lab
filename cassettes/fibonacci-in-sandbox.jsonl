@@ -1,0 +1,2 @@
+{"key": "293795c30465940e", "turn": {"text": "Running it.", "tool_calls": [{"id": "c1", "name": "run_python", "args": {"code": "a, b = 0, 1\nfor _ in range(10):\n    a, b = b, a + b\nprint(a)"}}]}}
+{"key": "c86074a45da5e792", "turn": {"text": "The 10th Fibonacci number is 55.", "tool_calls": []}}

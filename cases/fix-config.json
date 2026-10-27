@@ -1,0 +1,25 @@
+{
+  "id": "fix-config",
+  "task": "Set debug to false in config.json.",
+  "files": {
+    "config.json": "{\"debug\": true, \"port\": 8080}"
+  },
+  "capabilities": [
+    "fs.read:{WS}",
+    "fs.write:{WS}"
+  ],
+  "expect": {
+    "files": {
+      "config.json": "\"debug\": false"
+    },
+    "tools": [
+      "read_file",
+      "write_file"
+    ],
+    "denied": 0,
+    "final_contains": [
+      "debug is now false"
+    ]
+  },
+  "cassette": "../cassettes/fix-config.jsonl"
+}

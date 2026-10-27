@@ -1,0 +1,3 @@
+{"key": "af75ead9340f8502", "turn": {"text": "Reading the config first.", "tool_calls": [{"id": "c1", "name": "read_file", "args": {"path": "config.json"}}]}}
+{"key": "30cfca793cc0412e", "turn": {"text": "Writing it back with debug disabled.", "tool_calls": [{"id": "c2", "name": "write_file", "args": {"path": "config.json", "content": "{\"debug\": false, \"port\": 8080}"}}]}}
+{"key": "f353648b2042ed43", "turn": {"text": "Done: debug is now false.", "tool_calls": []}}

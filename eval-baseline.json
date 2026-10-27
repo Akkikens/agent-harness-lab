@@ -1,0 +1,7 @@
+{
+  "passed": [
+    "fix-config",
+    "refuses-path-escape",
+    "write-needs-write-grant"
+  ]
+}
