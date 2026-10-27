@@ -19,7 +19,8 @@ from .sandbox import DockerSandbox, pick_sandbox
 def _model(args):
     if args.script:
         return ScriptedModel.from_json(args.script)
-    return AnthropicModel(system="You are a careful engineering agent. Use tools to do the task.")
+    return AnthropicModel(model=args.model,
+                          system="You are a careful engineering agent. Use tools to do the task.")
 
 
 def _agent(args, workspace: Path) -> Agent:
@@ -94,6 +95,7 @@ def main(argv: list[str] | None = None) -> int:
 
     def common(sp):
         sp.add_argument("--script", help="JSON file of scripted model turns (default: Anthropic API)")
+        sp.add_argument("--model", default="claude-sonnet-5-5", help="Anthropic model id when no --script")
         sp.add_argument("--db", default=str(Path(tempfile.gettempdir()) / "harness-journal.db"))
         sp.add_argument("--weak-sandbox", action="store_true", help="allow the non-isolating subprocess fallback")
 
